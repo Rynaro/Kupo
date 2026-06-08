@@ -1,0 +1,10 @@
+.DS_Store
+*.swp
+*.swo
+*~
+# Install output (consumer-side); never committed to the Eidolon repo.
+.claude/
+.eidolons/
+.cursor/
+.opencode/
+.codex/

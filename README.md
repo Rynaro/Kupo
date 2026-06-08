@@ -93,4 +93,4 @@ Do not rely on Kupo in production pipelines without an eval result.
 
 ---
 
-*Kupo v1.0.0 — in_construction*
+*Kupo v0.1.0 — in_construction*

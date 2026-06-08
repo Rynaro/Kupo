@@ -1,6 +1,6 @@
 ---
 name: kupo
-version: 1.0.0
+version: 0.1.0
 methodology: KUPO
 methodology_version: 1.0.0
 role: executor — low-effort localized micro-task worker; heavier Eidolons delegate quick, verifier-backed edits to it
@@ -84,4 +84,4 @@ CRYSTALIUM recall pre-flight and the memory matrix: see `SPEC.md §9` (pointer o
 
 ---
 
-*Kupo v1.0.0*
+*Kupo v0.1.0*
