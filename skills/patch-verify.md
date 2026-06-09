@@ -48,20 +48,25 @@ Use whole-file only when search/replace would require > 3 blocks or the file is
 applier provides deterministic fuzzy matching; Kupo's job is to emit clean
 structured proposals.
 
-### Harness applier
+### Harness applier — TRUST IT, it is real
 
-Pass the proposal to the nexus harness:
+The nexus ships the applier. Invoke it on the scratch working copy the parent
+provides (a throwaway copy of the repo — never the real tree):
 
 ```sh
 eidolons sandbox apply --proposal <proposal-json> --root <scratch-dir>
 ```
 
-The applier copies the relevant file(s) from the real tree into `<scratch-dir>`,
-applies the edit, and reports success or a structured error. Kupo never writes
-files directly — the applier is the only mutation path.
+It applies your search/replace (with deterministic fuzzy matching) or whole-file
+edit to the files already under `<scratch-dir>` and reports `applied` or a
+structured error. Kupo never writes files directly — this is the only mutation path.
 
-On applier error: treat as a Phase O failure (increment consecutive + total
-counters, adjust the proposal, loop).
+**Do not doubt the tool.** `eidolons sandbox apply` exists and is installed. If you
+cannot immediately confirm it, RUN IT — do not assume it is missing, and do not
+`REFUSE`/`ESCALATE` a KEEP task on a tool-existence doubt. A `not_found` result
+means your `search` text was not verbatim → return to Phase U, tighten the anchor,
+and retry. An apply error is a Phase O failure (increment counters, adjust the
+proposal, loop) — never a reason to abandon a trivially-in-scope task.
 
 ### Per-file loop detector
 
@@ -83,8 +88,10 @@ patched **3+ times** without a green signal from Phase O:
 Use the named verifier from Phase K (never substitute a different one):
 
 ```sh
-eidolons sandbox run  <verifier-command> --root <scratch-dir>
-eidolons sandbox loop <verifier-command> --root <scratch-dir> [--max N]
+# Run the NAMED verifier in the applied scratch copy (its cwd). It has no --root:
+( cd <scratch-dir> && <verifier-command> ); echo "exit=$?"
+# For untrusted/host-isolated execution, wrap it via the sandbox (carries --via):
+eidolons sandbox run --via <sandbox-cmd> -- <verifier-command>
 ```
 
 Supported verifier classes: `test`, `typecheck`, `lint`, `compile`, `diff`,
@@ -165,7 +172,7 @@ On green signal:
      "envelope_version": "2.0",
      "message_id": "<UUIDv7>",
      "thread_id": "<from inbound envelope>",
-     "from": { "eidolon": "kupo", "version": "1.0.0" },
+     "from": { "eidolon": "kupo", "version": "0.1.1" },
      "to": { "eidolon": "<original sender>" },
      "performative": "PROPOSE",
      "objective": "<≤240-char summary of the edit>",

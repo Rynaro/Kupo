@@ -3,7 +3,7 @@ set -euo pipefail
 
 EIDOLON_NAME="kupo"
 EIDOLON_SLUG="kupo"
-EIDOLON_VERSION="0.1.0"
+EIDOLON_VERSION="0.1.1"
 METHODOLOGY="KUPO"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
