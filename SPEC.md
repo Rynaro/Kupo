@@ -1,6 +1,6 @@
 ---
 name: kupo
-version: 0.1.1
+version: 1.0.0
 description: "Low-effort localized executor. A heavier Eidolon delegates a quick verifier-backed micro-task; Kupo patches an ephemeral sandbox, proves it externally, and proposes a verified patch for the parent to commit."
 ---
 
@@ -342,4 +342,4 @@ without it.
 
 ---
 
-*Kupo v0.1.1*
+*Kupo v1.0.0*

@@ -172,7 +172,7 @@ On green signal:
      "envelope_version": "2.0",
      "message_id": "<UUIDv7>",
      "thread_id": "<from inbound envelope>",
-     "from": { "eidolon": "kupo", "version": "0.1.1" },
+     "from": { "eidolon": "kupo", "version": "1.0.0" },
      "to": { "eidolon": "<original sender>" },
      "performative": "PROPOSE",
      "objective": "<≤240-char summary of the edit>",

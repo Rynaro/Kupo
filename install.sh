@@ -3,7 +3,7 @@ set -euo pipefail
 
 EIDOLON_NAME="kupo"
 EIDOLON_SLUG="kupo"
-EIDOLON_VERSION="0.1.1"
+EIDOLON_VERSION="1.0.0"
 METHODOLOGY="KUPO"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -324,7 +324,7 @@ if [[ "$MANIFEST_ONLY" != "true" ]]; then
     cp "${SCRIPT_DIR}/schemas/kupo-edit-proposal.v1.json"         "${TARGET}/schemas/kupo-edit-proposal.v1.json"
 
     # --- shared composable block (opt-in via --shared-dispatch) ---
-    SHARED_BLOCK="## ${METHODOLOGY} — Low-effort executor (v${EIDOLON_VERSION}, in_construction)
+    SHARED_BLOCK="## ${METHODOLOGY} — Low-effort executor (v${EIDOLON_VERSION})
 
 Entry:     \`${TARGET_REL}/agent.md\`
 Full spec: \`${TARGET_REL}/SPEC.md\`
