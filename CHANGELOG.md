@@ -11,6 +11,35 @@ Versioning: [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.0] - 2026-06-10
+
+### Changed
+
+- Version-stamp sweep: all canonical homes bumped to 1.1.0 (install.sh, agent.md,
+  AGENTS.md, SPEC.md frontmatter headers). Doc/template footers stripped of inline
+  version strings per D1 policy.
+- README footer: stripped stale `v0.1.0 — in_construction` tag.
+- Skills: added canonical EIIS skill frontmatter (`name`, `description`, `metadata:`)
+  to all three skills (kupo-verify-incoming, kupo-keep-or-kick, kupo-patch-verify).
+  Descriptions are host-visible; bodies preserved verbatim.
+- ECL trace placeholders: `"to":"kupo@1.0"` → `"to":"kupo@<version>"`;
+  `"version":"1.0.0"` envelope template → `"<version>"` in patch-verify.md.
+- schemas/install.manifest.v1.json `$id`: EIIS URL bumped from v1.0.0 → v1.4.0.
+- hosts/claude-code.md example frontmatter: version bumped to 1.1.0.
+- CHANGELOG: backfilled [1.0.0] entry (promotion from in_construction 0.1.0).
+
+---
+
+## [1.0.0] - 2026-06-08
+
+### Changed
+
+- Promoted from `in_construction` (0.1.0) to shipped stable release.
+- Roster status flipped to active; MASTER eval-gate passed (KEEP-cohort 36/36).
+- All 0.1.0 content retained; version stamps updated to 1.0.0.
+
+---
+
 ## [0.1.0] - 2026-06-08
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Rynaro/eidolons-eiis/blob/v1.0.0/schemas/install.manifest.v1.json",
+  "$id": "https://github.com/Rynaro/eidolons-eiis/blob/v1.4.0/schemas/install.manifest.v1.json",
   "title": "EIIS install.manifest v1",
   "description": "Written by install.sh into <target>/install.manifest.json after a successful install. Defined by EIIS §3. v1.3 adds optional fields spec_file and skills. v1.4 adds role values 'agent-profile' and 'ecl-version'; adds optional field canonical_inventory_strict.",
   "type": "object",

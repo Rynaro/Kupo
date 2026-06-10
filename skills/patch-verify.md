@@ -1,4 +1,17 @@
+---
+name: kupo-patch-verify
+description: Phase P+O sandbox patch loop with external verifier; governs edit emission, harness applier invocation, per-file loop detector, circuit-breaker, and pre-completion green-signal gate. Use when Kupo enters Phase P to emit a patch or Phase O to run verifiers; load after a KEEP decision. Do NOT use during Phase K or U.
+metadata:
+  methodology: Kupo
+  phase: P+O
+---
+
 # Patch-Verify Skill — Kupo (Phase P+O loop)
+
+## When to use
+
+Load during Phase P (Patch) and Phase O (Observe). Governs the
+edit → harness-apply → sandbox → verify loop. Never invoked in K or U.
 
 Loaded during Phase P (Patch) and Phase O (Observe). Governs the
 edit → harness-apply → sandbox → verify loop. Never invoked in K or U.
@@ -172,7 +185,7 @@ On green signal:
      "envelope_version": "2.0",
      "message_id": "<UUIDv7>",
      "thread_id": "<from inbound envelope>",
-     "from": { "eidolon": "kupo", "version": "1.0.0" },
+     "from": { "eidolon": "kupo", "version": "<version>" },
      "to": { "eidolon": "<original sender>" },
      "performative": "PROPOSE",
      "objective": "<≤240-char summary of the edit>",

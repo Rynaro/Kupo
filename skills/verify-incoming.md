@@ -1,4 +1,16 @@
+---
+name: kupo-verify-incoming
+description: Blocking ECL envelope integrity gate for inbound Kupo hand-offs; verifies SHA-256 and contract conformance before any payload is processed. Use when an upstream artefact arrives with a sibling .envelope.json; load automatically on every inbound ECL hand-off. Do NOT use for non-ECL artefacts (no .envelope.json sibling).
+metadata:
+  methodology: Kupo
+  phase: cross-cutting
+---
+
 # Verify-Incoming Skill — Kupo (blocking, symmetric)
+
+## When to use
+
+Load this skill automatically when reading any upstream artefact handed off to Kupo that carries a sibling `.envelope.json`. Blocking receiver integrity gate (ECL §6.2.2). Do not load for non-ECL artefacts (no `.envelope.json` sibling).
 
 Loaded when reading any upstream artefact handed off to Kupo that carries a sibling `.envelope.json`. Blocking receiver integrity gate (ECL §6.2.2).
 
@@ -145,12 +157,12 @@ envelope is unparseable, use `unknown`.
 
 **verify_pass:**
 ```json
-{"ts":"<RFC3339>","event":"verify_pass","message_id":"<uuid>","thread_id":"<uuid>","from":"<eidolon>@<version>","to":"kupo@1.0","performative":"<performative>","integrity_method":"sha256"}
+{"ts":"<RFC3339>","event":"verify_pass","message_id":"<uuid>","thread_id":"<uuid>","from":"<eidolon>@<version>","to":"kupo@<version>","performative":"<performative>","integrity_method":"sha256"}
 ```
 
 **verify_fail:**
 ```json
-{"ts":"<RFC3339>","event":"verify_fail","message_id":"<uuid>","thread_id":"<uuid>","from":"<eidolon>@<version>","to":"kupo@1.0","integrity_method":"sha256","verify_failure_code":"<CODE>","decision":"refused"}
+{"ts":"<RFC3339>","event":"verify_fail","message_id":"<uuid>","thread_id":"<uuid>","from":"<eidolon>@<version>","to":"kupo@<version>","integrity_method":"sha256","verify_failure_code":"<CODE>","decision":"refused"}
 ```
 
 ---

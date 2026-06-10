@@ -28,7 +28,7 @@ requests them (triggered by phase entry or envelope detection).
 ```yaml
 ---
 name: kupo
-version: 1.0.0
+version: 1.1.0
 methodology: KUPO
 methodology_version: 1.0.0
 role: executor — low-effort localized micro-task worker

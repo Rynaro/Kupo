@@ -1,4 +1,17 @@
+---
+name: kupo-keep-or-kick
+description: Phase K triage gate that decides whether Kupo will attempt a delegated micro-task or refuse cheaply. Use when a delegation arrives and Kupo must decide KEEP vs REFUSE/ESCALATE; runs once per delegation at the start of every KUPO cycle. Do NOT use during Phase U/P/O.
+metadata:
+  methodology: Kupo
+  phase: K
+---
+
 # Keep-or-Kick Skill — Kupo (Phase K triage)
+
+## When to use
+
+Load during Phase K (triage). Runs once per delegation. Triage cost ≈ 1 step.
+Do not load during Phase U, P, or O.
 
 Loaded during Phase K. Runs once per delegation. Triage cost ≈ 1 step.
 
