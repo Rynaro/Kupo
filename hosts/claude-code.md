@@ -28,7 +28,7 @@ requests them (triggered by phase entry or envelope detection).
 ```yaml
 ---
 name: kupo
-version: 1.1.0
+version: 1.1.1
 methodology: KUPO
 methodology_version: 1.0.0
 role: executor — low-effort localized micro-task worker
@@ -45,6 +45,7 @@ subagent dispatch file at `.claude/agents/kupo.md`:
 name: kupo
 description: Low-effort localized executor. Delegates quick verifier-backed micro-tasks; patches a sandbox, proves externally, proposes a verified patch.
 model: haiku
+tools: Read, Grep, Glob, Bash(eidolons sandbox:*), Bash(make:*), Bash(bats:*), Bash(rspec:*), Bash(jest:*), Bash(pytest:*), Bash(go test:*), Bash(shellcheck:*), Bash(shasum:*), Bash(wc:*)
 ---
 You are KUPO. Read these two files in order at session start:
 1. `./.eidolons/kupo/agent.md` — always-loaded P0 rules.

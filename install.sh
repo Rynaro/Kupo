@@ -3,7 +3,7 @@ set -euo pipefail
 
 EIDOLON_NAME="kupo"
 EIDOLON_SLUG="kupo"
-EIDOLON_VERSION="1.1.0"
+EIDOLON_VERSION="1.1.1"
 METHODOLOGY="KUPO"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -418,6 +418,7 @@ Cycle:     K (Keep-or-Kick) → U (Understand) → P (Patch) → O (Observe)
 name: ${EIDOLON_NAME}
 description: "Low-effort executor — delegated localized micro-tasks, sandbox-proven, PROPOSE-only (never the real tree)."
 model: haiku
+tools: Read, Grep, Glob, Bash(eidolons sandbox:*), Bash(make:*), Bash(bats:*), Bash(rspec:*), Bash(jest:*), Bash(pytest:*), Bash(go test:*), Bash(shellcheck:*), Bash(shasum:*), Bash(wc:*)
 ---
 
 You are ${METHODOLOGY}. Read these two files in order at session start:

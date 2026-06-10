@@ -11,6 +11,29 @@ Versioning: [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.1] - 2026-06-10
+
+### Added
+
+- `.claude/agents/kupo.md` subagent dispatch file now includes an explicit
+  `tools:` allowlist in frontmatter: `Read, Grep, Glob,
+  Bash(eidolons sandbox:*), Bash(make:*), Bash(bats:*), Bash(rspec:*),
+  Bash(jest:*), Bash(pytest:*), Bash(go test:*), Bash(shellcheck:*),
+  Bash(shasum:*), Bash(wc:*)`. Previously the heredoc emitted no `tools:`
+  line, leaving Kupo crystalium-only and unable to Read files in the
+  Understand phase, invoke the sandbox applier, or run its mandatory external
+  verifier. PROPOSE-only boundary preserved: no Write/Edit tools granted.
+  `mcp__crystalium__*` is omitted — nexus wiring appends it separately.
+
+### Changed
+
+- Version stamp bumped to 1.1.1 across all canonical homes: `install.sh`,
+  `agent.md`, `AGENTS.md`, `SPEC.md`.
+- `hosts/claude-code.md`: subagent dispatch example updated with `tools:`
+  line; `agent.md` frontmatter example version bumped to 1.1.1.
+
+---
+
 ## [1.1.0] - 2026-06-10
 
 ### Changed
