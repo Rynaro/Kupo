@@ -1,6 +1,6 @@
 ---
 name: kupo
-version: 1.0.0
+version: 1.1.0
 methodology: KUPO
 methodology_version: 1.0.0
 role: executor — low-effort localized micro-task worker; heavier Eidolons delegate quick, verifier-backed edits to it

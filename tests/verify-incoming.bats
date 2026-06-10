@@ -68,10 +68,12 @@ teardown() {
   done
 }
 
-@test "skills/verify-incoming.md opens with a markdown heading (no frontmatter)" {
-  local first_nonempty
-  first_nonempty="$(grep -m1 '.' "${REPO_ROOT}/skills/verify-incoming.md")"
-  [[ "$first_nonempty" == "#"* ]]
+@test "skills/verify-incoming.md has canonical EIIS skill frontmatter" {
+  # D2: skills now carry canonical frontmatter (name, description, metadata).
+  run grep -q '^name: kupo-verify-incoming' "${REPO_ROOT}/skills/verify-incoming.md"
+  [ "$status" -eq 0 ]
+  run grep -q '^description:' "${REPO_ROOT}/skills/verify-incoming.md"
+  [ "$status" -eq 0 ]
 }
 
 # ── ECL_VERSION assertion ─────────────────────────────────────────────────────
