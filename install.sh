@@ -3,7 +3,7 @@ set -euo pipefail
 
 EIDOLON_NAME="kupo"
 EIDOLON_SLUG="kupo"
-EIDOLON_VERSION="1.1.1"
+EIDOLON_VERSION="1.2.0"
 METHODOLOGY="KUPO"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Basenames removed from <TARGET>/ when found on disk.
 LEGACY_SPEC_FILES=("KUPO.md")
 # Subdir names removed from <TARGET>/skills/ when found as directories.
-LEGACY_SKILL_DIRS=("keep-or-kick" "patch-verify" "verify-incoming")
+LEGACY_SKILL_DIRS=("keep-or-kick" "patch-verify" "verify-incoming" "esl-hop")
 
 # --- ECL version ---
 ECL_VERSION_FILE="${SCRIPT_DIR}/ECL_VERSION"
@@ -292,6 +292,7 @@ if [[ "$MANIFEST_ONLY" != "true" ]]; then
     echo "  ${TARGET}/skills/verify-incoming.md"
     echo "  ${TARGET}/skills/keep-or-kick.md"
     echo "  ${TARGET}/skills/patch-verify.md"
+    echo "  ${TARGET}/skills/esl-hop.md"
     echo "  ${TARGET}/schemas/ecl-envelope.v1.json"
     echo "  ${TARGET}/schemas/ecl-base-profile.v1.json"
     echo "  ${TARGET}/schemas/install.manifest.v1.json"
@@ -402,7 +403,7 @@ Cycle:     K (Keep-or-Kick) → U (Understand) → P (Patch) → O (Observe)
     }
 
     # Emit per-skill source-of-truth + vendor files for every skill.
-    for skill in verify-incoming keep-or-kick patch-verify; do
+    for skill in verify-incoming keep-or-kick patch-verify esl-hop; do
       wire_skill "${skill}"
     done
 
@@ -528,6 +529,7 @@ if [[ "$DRY_RUN" != "true" ]]; then
     sha_verinc=$(sha256_file "${TARGET}/skills/verify-incoming.md")
     sha_kok=$(sha256_file "${TARGET}/skills/keep-or-kick.md")
     sha_pv=$(sha256_file "${TARGET}/skills/patch-verify.md")
+    sha_eslhop=$(sha256_file "${TARGET}/skills/esl-hop.md")
     sha_ecl_env=$(sha256_file "${TARGET}/schemas/ecl-envelope.v1.json")
     sha_ecl_base=$(sha256_file "${TARGET}/schemas/ecl-base-profile.v1.json")
     sha_manifest=$(sha256_file "${TARGET}/schemas/install.manifest.v1.json")
@@ -537,10 +539,12 @@ if [[ "$DRY_RUN" != "true" ]]; then
     sha_verinc_vendor=""
     sha_kok_vendor=""
     sha_pv_vendor=""
+    sha_eslhop_vendor=""
     if hosts_contains "claude-code"; then
       sha_verinc_vendor=$(sha256_file ".claude/skills/${EIDOLON_SLUG}-verify-incoming/SKILL.md")
       sha_kok_vendor=$(sha256_file ".claude/skills/${EIDOLON_SLUG}-keep-or-kick/SKILL.md")
       sha_pv_vendor=$(sha256_file ".claude/skills/${EIDOLON_SLUG}-patch-verify/SKILL.md")
+      sha_eslhop_vendor=$(sha256_file ".claude/skills/${EIDOLON_SLUG}-esl-hop/SKILL.md")
     fi
 
     files_entries=""
@@ -576,6 +580,9 @@ if [[ "$DRY_RUN" != "true" ]]; then
     files_append \
       "{\"path\": \"skills/patch-verify.md\",         \"sha256\": \"${sha_pv}\",      \"role\": \"skill\",         \"mode\": \"created\"}" \
       "skills/patch-verify.md"
+    files_append \
+      "{\"path\": \"skills/esl-hop.md\",              \"sha256\": \"${sha_eslhop}\",  \"role\": \"skill\",         \"mode\": \"created\"}" \
+      "skills/esl-hop.md"
     if hosts_contains "claude-code"; then
       files_append \
         "{\"path\": \".claude/skills/${EIDOLON_SLUG}-verify-incoming/SKILL.md\", \"sha256\": \"${sha_verinc_vendor}\", \"role\": \"skill\", \"mode\": \"created\"}" \
@@ -585,6 +592,9 @@ if [[ "$DRY_RUN" != "true" ]]; then
         ""
       files_append \
         "{\"path\": \".claude/skills/${EIDOLON_SLUG}-patch-verify/SKILL.md\", \"sha256\": \"${sha_pv_vendor}\", \"role\": \"skill\", \"mode\": \"created\"}" \
+        ""
+      files_append \
+        "{\"path\": \".claude/skills/${EIDOLON_SLUG}-esl-hop/SKILL.md\", \"sha256\": \"${sha_eslhop_vendor}\", \"role\": \"skill\", \"mode\": \"created\"}" \
         ""
     fi
     files_append \
@@ -630,13 +640,15 @@ ${files_entries}
       skills_json="[
     {\"name\": \"verify-incoming\", \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/verify-incoming.md\", \"source_sha256\": \"${sha_verinc}\", \"vendor_path\": \".claude/skills/${EIDOLON_SLUG}-verify-incoming/SKILL.md\", \"vendor_sha256\": \"${sha_verinc_vendor}\"},
     {\"name\": \"keep-or-kick\",    \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/keep-or-kick.md\",    \"source_sha256\": \"${sha_kok}\",    \"vendor_path\": \".claude/skills/${EIDOLON_SLUG}-keep-or-kick/SKILL.md\",    \"vendor_sha256\": \"${sha_kok_vendor}\"},
-    {\"name\": \"patch-verify\",    \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/patch-verify.md\",    \"source_sha256\": \"${sha_pv}\",     \"vendor_path\": \".claude/skills/${EIDOLON_SLUG}-patch-verify/SKILL.md\",    \"vendor_sha256\": \"${sha_pv_vendor}\"}
+    {\"name\": \"patch-verify\",    \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/patch-verify.md\",    \"source_sha256\": \"${sha_pv}\",     \"vendor_path\": \".claude/skills/${EIDOLON_SLUG}-patch-verify/SKILL.md\",    \"vendor_sha256\": \"${sha_pv_vendor}\"},
+    {\"name\": \"esl-hop\",         \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/esl-hop.md\",         \"source_sha256\": \"${sha_eslhop}\", \"vendor_path\": \".claude/skills/${EIDOLON_SLUG}-esl-hop/SKILL.md\",         \"vendor_sha256\": \"${sha_eslhop_vendor}\"}
   ]"
     else
       skills_json="[
     {\"name\": \"verify-incoming\", \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/verify-incoming.md\", \"source_sha256\": \"${sha_verinc}\"},
     {\"name\": \"keep-or-kick\",    \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/keep-or-kick.md\",    \"source_sha256\": \"${sha_kok}\"},
-    {\"name\": \"patch-verify\",    \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/patch-verify.md\",    \"source_sha256\": \"${sha_pv}\"}
+    {\"name\": \"patch-verify\",    \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/patch-verify.md\",    \"source_sha256\": \"${sha_pv}\"},
+    {\"name\": \"esl-hop\",         \"source_path\": \".eidolons/${EIDOLON_SLUG}/skills/esl-hop.md\",         \"source_sha256\": \"${sha_eslhop}\"}
   ]"
     fi
   fi

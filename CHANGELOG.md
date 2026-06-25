@@ -11,6 +11,36 @@ Versioning: [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.2.0] - 2026-06-25
+
+### Added
+
+- `skills/esl-hop.md` (`kupo-esl-hop`) — ESL (Eidolons Spec Lifecycle) adoption.
+  In an ESL-enabled project (`mcp__tonberry__*` available), when the cortex routes
+  a verification to Kupo, Kupo is the **CHECKER** and owns the **verified**
+  transition: run the external verifiers against the change's `acceptance_checks`,
+  call `mcp__tonberry__verify <change-dir> --mode <enforcement>` (the 6 conformance
+  checks C1–C6, incl. C4 maker≠checker), compose the verify envelope with
+  `from.eidolon = kupo` (MUST differ from `change.json.maker`), and on pass call
+  `mcp__tonberry__transition --to_status verified` + PROPOSE `verify_pass`; on fail
+  ESCALATE (the checker cannot make). **Graceful skip:** tonberry absent → run the
+  normal verify, never hard-fail (ESL is opt-in). References the nexus cortex
+  `methodology/cortex/esl-protocol.md`. Replicates the proven SPECTRA esl-hop
+  pattern (the checker half of the maker≠checker pair).
+- Skill wired through `install.sh` for all hosts: source-of-truth
+  `skills/esl-hop.md` + `.claude/skills/kupo-esl-hop/SKILL.md` (manifest-listed) +
+  `.github/instructions/kupo-esl-hop.instructions.md` +
+  `.cursor/rules/kupo-esl-hop.mdc`. New `skills[]` + `files_written[]` manifest
+  entries; `LEGACY_SKILL_DIRS` gains `esl-hop`.
+- Skill-loading row added in `agent.md`, `SPEC.md §6`, and `AGENTS.md`.
+
+### Changed
+
+- Version stamp bumped to 1.2.0 across all canonical homes: `install.sh`
+  (`EIDOLON_VERSION`), `agent.md`, `AGENTS.md`, `SPEC.md`, `hosts/claude-code.md`.
+
+---
+
 ## [1.1.1] - 2026-06-10
 
 ### Added

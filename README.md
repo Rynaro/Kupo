@@ -58,7 +58,8 @@ Kupo/
 ├── skills/
 │   ├── verify-incoming.md   # BLOCKING ECL gate (ECL §6.2.2)
 │   ├── keep-or-kick.md      # Phase K triage procedure
-│   └── patch-verify.md      # Phase P+O patch-and-verify loop
+│   ├── patch-verify.md      # Phase P+O patch-and-verify loop
+│   └── esl-hop.md           # ESL lifecycle hop — Kupo as CHECKER (opt-in)
 ├── schemas/
 │   ├── kupo-edit-proposal.v1.json   # Edit proposal output schema
 │   ├── ecl-envelope.v1.json         # Vendored ECL envelope schema

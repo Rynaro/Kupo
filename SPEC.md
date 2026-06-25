@@ -1,6 +1,6 @@
 ---
 name: kupo
-version: 1.1.1
+version: 1.2.0
 description: "Low-effort localized executor. A heavier Eidolon delegates a quick verifier-backed micro-task; Kupo patches an ephemeral sandbox, proves it externally, and proposes a verified patch for the parent to commit."
 ---
 
@@ -259,6 +259,7 @@ ECL sidecar `<artefact>.envelope.json`.
 | Inbound artefact + `.envelope.json` sibling | `skills/verify-incoming.md` (BLOCKING) |
 | Phase K triage | `skills/keep-or-kick.md` |
 | Phase P+O loop | `skills/patch-verify.md` |
+| ESL verify routed to Kupo (tonberry MCP present) — CHECKER role | `skills/esl-hop.md` (opt-in) |
 | Validating an `edit-proposal` artefact | `schemas/kupo-edit-proposal.v1.json` |
 | Validating an inbound envelope | `schemas/ecl-envelope.v1.json` |
 
