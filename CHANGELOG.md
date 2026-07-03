@@ -11,6 +11,77 @@ Versioning: [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.3.0] - 2026-07-03
+
+### Added
+
+- **ECL v2.0 vendoring.** `schemas/ecl-envelope.v2.json` — self-contained
+  vendored copy of `eidolons-ecl@v2.0.0`'s `schemas/envelope.v2.json`
+  (`spec/ecl-2.0.md` §6.5), following the same inlined-enum, self-contained
+  convention as the existing `schemas/ecl-envelope.v1.json`. The v1 file is
+  **retained**, not replaced — Kupo can still validate a v1.x sidecar
+  received during the ECL §7.3 compatibility window (through 2027-05-13).
+  Kupo was already ECL-2.0-clean in prose (`comm.envelope_version: "2.0"` in
+  `agent.md`/`AGENTS.md` frontmatter, `ECL_VERSION` = `2.0`) but only vendored
+  the v1 schema on disk — this closes that gap. Wired into `install.sh`
+  (unconditional `cp`, role `other`, manifest `files_written[]`).
+- **ISE (Intent, Source, Entitlement) emission on the outbound `edit-proposal`
+  PROPOSE** (ECL v2.0 §6.5). `skills/patch-verify.md`'s "ECL emission" step
+  gains `ise.assertion_grade: "validated"` — the only grade Kupo ever emits,
+  because Kupo cannot reach PROPOSE without first passing the
+  pre-completion green-signal gate: a NAMED external verifier (the one
+  `skills/keep-or-kick.md`'s structural KEEP predicate required to exist
+  before the task was even accepted) exited green in the sandbox. "Emitter
+  ran spec-mandated gates" is true by construction, never a self-report.
+  Plus `ise.receiver_authorization: {auto_route: true, auto_merge: false,
+  auto_deploy: false}` — `auto_merge: false` is load-bearing, not
+  boilerplate: the parent applies and commits (PROPOSE-only P0); Kupo's own
+  verified signal never authorizes a receiver to merge on its say-so. Plus
+  `ise.provenance.methodology_version: "kupo-1.3.0"` (`lateral_consults`
+  always empty — worker-never-router). `SPEC.md §5` documents the full
+  rationale; `SPEC.md §6`'s schema table now points outbound validation at
+  the v2 schema.
+- **ECL 2.1 verification-attestation note (doc-only, pending).**
+  `skills/esl-hop.md` gains a "Looking ahead" section documenting that once
+  ECL 2.1 (currently Draft — adoption-gated, `spec/ecl-2.1.md`) is cut to
+  Published, the verify envelope Kupo composes as CHECKER for Vivi/APIVR-Δ
+  makers will carry `ise.verification: {fresh_context: true, checker:
+  "kupo", transcript_access: "artifact-only"}` per ESL 1.1's C8 check
+  (§5.4/§8.2). This is **documentation of a pending shape — not current
+  emission**; `ECL_VERSION` stays `2.0` and this skill does not emit
+  `ise.verification` today.
+- **Memory: post-flight procedural commit (SHOULD, additive).** `SPEC.md §9`
+  and `skills/patch-verify.md` step 5 now document that after a KEEP task's
+  Phase O produces its green external signal, Kupo SHOULD commit the
+  verified edit pattern (`task_class`, `verifier`, `pattern_summary`) to
+  CRYSTALIUM `layer=procedural` with `quality: "verified"` as part of the
+  standard post-flight, building a reusable weak-host fix library across
+  delegations. Additive prose only — no new tooling, never blocks or delays
+  PROPOSE, graceful-skip when CRYSTALIUM is absent (unchanged posture).
+
+### Changed
+
+- **ECL prose drift kill.** `CLAUDE.md`'s load-order note and `README.md`'s
+  architecture tree updated to list both the retained v1 schema and the new
+  v2 schema, instead of only v1.
+- **Version stamp bumped to 1.3.0** across the 5 canonical homes:
+  `install.sh` (`EIDOLON_VERSION`), `agent.md`, `AGENTS.md`, `SPEC.md`,
+  `hosts/claude-code.md`.
+
+### Tests
+
+- New `tests/ecl-v2-adoption.bats`: v2 schema vendored + valid + v1 retained,
+  `$defs.ise` shape (`assertion_grade` required, four-value enum), install.sh
+  wiring (source cp, manifest `files_written[]`, installed-target presence),
+  ISE emission asserted on the `skills/patch-verify.md` PROPOSE example
+  (`assertion_grade: "validated"`, `auto_merge: false`), the ECL 2.1
+  pending-note in `skills/esl-hop.md`, the memory post-flight-commit prose in
+  `SPEC.md`/`skills/patch-verify.md`, drift-kill greps (no stray "ECL v1.0"
+  prose outside the retained v1 schema's own self-description and
+  CHANGELOG.md), and the 5-canonical-homes version-stamp check.
+
+---
+
 ## [1.2.0] - 2026-06-25
 
 ### Added

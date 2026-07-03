@@ -1,6 +1,6 @@
 ---
 name: kupo
-version: 1.2.0
+version: 1.3.0
 description: "Low-effort localized executor. A heavier Eidolon delegates a quick verifier-backed micro-task; Kupo patches an ephemeral sandbox, proves it externally, and proposes a verified patch for the parent to commit."
 ---
 
@@ -213,7 +213,37 @@ authority.
 
 ## §5 ECL Composition v2.0
 
-Kupo declares `comm.envelope_version: "2.0"` and conforms to ECL §6.2.2.
+Kupo declares `comm.envelope_version: "2.0"` and conforms to ECL §6.2.2 and
+ECL v2.0 §6.5 (ISE trust hierarchy). Outbound envelopes validate against
+`schemas/ecl-envelope.v2.json` (`schemas/ecl-envelope.v1.json` is retained
+in-repo for the ECL §7.3 back-compat window — through 2027-05-13 — so Kupo
+can still validate a v1.x sidecar it receives, but never emits against it).
+
+### ISE (Intent, Source, Entitlement) on the outbound PROPOSE
+
+Every `edit-proposal` PROPOSE carries an `ise` block:
+
+- **`assertion_grade: "validated"`** — the only grade Kupo ever emits. Kupo
+  cannot reach PROPOSE without passing the pre-completion green-signal gate
+  (§2 Phase O): a NAMED external verifier — the same one `skills/keep-or-kick.md`'s
+  structural KEEP predicate required to exist before the task was even
+  accepted — exited green in the sandbox. "Emitter ran spec-mandated gates"
+  is true by construction, not self-report, which is exactly what
+  `validated` requires (ECL v2.0 §6.5.1). Kupo never emits `self-attested`
+  or `unverified` — there is no PROPOSE-reachable path that skips the
+  verifier.
+- **`ise.receiver_authorization: {auto_route: true, auto_merge: false,
+  auto_deploy: false}`** — `auto_merge: false` is load-bearing, not a
+  default left untouched: the parent applies and commits (§4 Security model;
+  the PROPOSE-only P0 in `agent.md`). Kupo's own green signal never
+  authorizes a receiver to merge on Kupo's say-so, however strong the
+  verifier result.
+- **`ise.provenance.methodology_version`** — `kupo-<version>`, per ECL v2.0
+  §6.5.2. `lateral_consults` is always empty (worker-never-router, no
+  lateral consults by construction).
+
+Full field-level detail and the emission JSON: `skills/patch-verify.md`
+"Output: edit-proposal artefact + ECL PROPOSE".
 
 ### Inbound verification
 
@@ -261,7 +291,8 @@ ECL sidecar `<artefact>.envelope.json`.
 | Phase P+O loop | `skills/patch-verify.md` |
 | ESL verify routed to Kupo (tonberry MCP present) — CHECKER role | `skills/esl-hop.md` (opt-in) |
 | Validating an `edit-proposal` artefact | `schemas/kupo-edit-proposal.v1.json` |
-| Validating an inbound envelope | `schemas/ecl-envelope.v1.json` |
+| Validating an outbound PROPOSE envelope | `schemas/ecl-envelope.v2.json` |
+| Validating an inbound v1.x envelope (ECL §7.3 back-compat window) | `schemas/ecl-envelope.v1.json` |
 
 Load on-demand only. Never pre-load all skills at session start.
 
@@ -329,6 +360,7 @@ tier rules: `methodology/cortex/memory-protocol.md` in the nexus.
 | Hook | Phase | Call |
 |---|---|---|
 | Recall (pre-flight) | K entry — before triage | `mcp__crystalium__recall(scope, query, k=5, layers=[semantic, episodic, procedural])` |
+| Post-flight commit (KEEP verified) | O — after ≥1 green external signal, standard post-flight (before/alongside PROPOSE) | `mcp__crystalium__commit(layer=procedural, payload={task_class, verifier, pattern_summary}, provenance={author_agent:"kupo", quality:"verified"})` |
 | Ingest (spine) | O — after PROPOSE emitted | `mcp__crystalium__ingest(envelope, payload)` → T1 (`from.eidolon=kupo`) |
 | Commit (fallback) | O — no outbound envelope | `mcp__crystalium__commit(layer=episodic, provenance={author_agent:"kupo"})` |
 | Session end | O — after any terminal exit | `mcp__crystalium__session_end()` → triggers Dream consolidation |
@@ -337,9 +369,19 @@ tier rules: `methodology/cortex/memory-protocol.md` in the nexus.
 verifier patterns, scope decisions, and REFUSE codes recalled here sharpen
 triage accuracy across delegations.
 
-**Graceful skip:** all `mcp__crystalium__*` calls are skipped silently when
-CRYSTALIUM is not installed. Kupo remains fully EIIS-standalone-conformant
-without it.
+**Post-flight commit (KEEP verified), SHOULD.** After a KEEP task's Phase O
+produces its green external signal, Kupo SHOULD commit the verified edit
+pattern — `task_class` (the §3 KEEP class matched at K), `verifier` (the
+named external verifier that went green), and a short `pattern_summary` — to
+CRYSTALIUM `layer=procedural` with `quality: "verified"`. This is additive,
+not a new gate: it never blocks or delays PROPOSE. Repeated across
+delegations, it builds a reusable weak-host fix library — the next Kupo
+session recalls a prior verified pattern for the same task class instead of
+re-deriving it from scratch. See `skills/patch-verify.md` step 5.
+
+**Graceful skip:** all `mcp__crystalium__*` calls, including the post-flight
+commit above, are skipped silently when CRYSTALIUM is not installed. Kupo
+remains fully EIIS-standalone-conformant without it.
 
 ---
 
