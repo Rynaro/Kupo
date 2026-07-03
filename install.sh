@@ -3,7 +3,7 @@ set -euo pipefail
 
 EIDOLON_NAME="kupo"
 EIDOLON_SLUG="kupo"
-EIDOLON_VERSION="1.2.0"
+EIDOLON_VERSION="1.3.0"
 METHODOLOGY="KUPO"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -294,6 +294,7 @@ if [[ "$MANIFEST_ONLY" != "true" ]]; then
     echo "  ${TARGET}/skills/patch-verify.md"
     echo "  ${TARGET}/skills/esl-hop.md"
     echo "  ${TARGET}/schemas/ecl-envelope.v1.json"
+    echo "  ${TARGET}/schemas/ecl-envelope.v2.json"
     echo "  ${TARGET}/schemas/ecl-base-profile.v1.json"
     echo "  ${TARGET}/schemas/install.manifest.v1.json"
     echo "  ${TARGET}/schemas/kupo-edit-proposal.v1.json"
@@ -318,8 +319,12 @@ if [[ "$MANIFEST_ONLY" != "true" ]]; then
     cp "${SRC_SPEC}"                                              "${TARGET}/SPEC.md"
     cp "${SCRIPT_DIR}/ECL_VERSION"                                "${TARGET}/ECL_VERSION"
 
-    # Copy vendored ECL schemas + the edit-proposal profile Kupo emits
+    # Copy vendored ECL schemas + the edit-proposal profile Kupo emits.
+    # ecl-envelope.v1.json is RETAINED alongside v2 (not replaced) so Kupo's
+    # own tooling can still validate a v1.x sidecar received during the ECL
+    # §7.3 compatibility window (through 2027-05-13).
     cp "${SCRIPT_DIR}/schemas/ecl-envelope.v1.json"               "${TARGET}/schemas/ecl-envelope.v1.json"
+    cp "${SCRIPT_DIR}/schemas/ecl-envelope.v2.json"               "${TARGET}/schemas/ecl-envelope.v2.json"
     cp "${SCRIPT_DIR}/schemas/ecl-base-profile.v1.json"           "${TARGET}/schemas/ecl-base-profile.v1.json"
     cp "${SCRIPT_DIR}/schemas/install.manifest.v1.json"           "${TARGET}/schemas/install.manifest.v1.json"
     cp "${SCRIPT_DIR}/schemas/kupo-edit-proposal.v1.json"         "${TARGET}/schemas/kupo-edit-proposal.v1.json"
@@ -531,6 +536,7 @@ if [[ "$DRY_RUN" != "true" ]]; then
     sha_pv=$(sha256_file "${TARGET}/skills/patch-verify.md")
     sha_eslhop=$(sha256_file "${TARGET}/skills/esl-hop.md")
     sha_ecl_env=$(sha256_file "${TARGET}/schemas/ecl-envelope.v1.json")
+    sha_ecl_env_v2=$(sha256_file "${TARGET}/schemas/ecl-envelope.v2.json")
     sha_ecl_base=$(sha256_file "${TARGET}/schemas/ecl-base-profile.v1.json")
     sha_manifest=$(sha256_file "${TARGET}/schemas/install.manifest.v1.json")
     sha_editprop=$(sha256_file "${TARGET}/schemas/kupo-edit-proposal.v1.json")
@@ -600,6 +606,9 @@ if [[ "$DRY_RUN" != "true" ]]; then
     files_append \
       "{\"path\": \"schemas/ecl-envelope.v1.json\",        \"sha256\": \"${sha_ecl_env}\",  \"role\": \"other\", \"mode\": \"created\"}" \
       "schemas/ecl-envelope.v1.json"
+    files_append \
+      "{\"path\": \"schemas/ecl-envelope.v2.json\",        \"sha256\": \"${sha_ecl_env_v2}\",  \"role\": \"other\", \"mode\": \"created\"}" \
+      "schemas/ecl-envelope.v2.json"
     files_append \
       "{\"path\": \"schemas/ecl-base-profile.v1.json\",    \"sha256\": \"${sha_ecl_base}\", \"role\": \"other\", \"mode\": \"created\"}" \
       "schemas/ecl-base-profile.v1.json"

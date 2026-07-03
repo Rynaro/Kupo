@@ -178,7 +178,9 @@ On green signal:
    `PARENT_FILLS_SIZE_BYTES` as placeholders; the parent patches these before
    running `harness_verify`.)
 
-3. Compose the ECL envelope sidecar:
+3. Compose the ECL envelope sidecar, validated against `schemas/ecl-envelope.v2.json`
+   (`schemas/ecl-envelope.v1.json` is retained in-repo for the ECL §7.3
+   back-compat window — do not emit against it for new proposals):
 
    ```json
    {
@@ -196,11 +198,41 @@ On green signal:
        "sha256": "<hex>",
        "size_bytes": <N>
      },
+     "ise": {
+       "assertion_grade": "validated",
+       "provenance": {
+         "methodology_version": "kupo-<version>",
+         "tool_surface": ["Read", "Grep", "Glob", "Bash(eidolons sandbox:*)"],
+         "lateral_consults": []
+       },
+       "receiver_authorization": {
+         "auto_route": true,
+         "auto_merge": false,
+         "auto_deploy": false
+       }
+     },
      "integrity": { "method": "sha256", "value": "<hex>" }
    }
    ```
 
+   **Why `ise.assertion_grade: "validated"` (ECL v2.0 §6.5) on every PROPOSE,
+   with no lower grade ever emitted:** Kupo never reaches PROPOSE except
+   through the pre-completion green-signal gate above — a NAMED external
+   verifier (the one `skills/keep-or-kick.md` required to exist before KEEP
+   was even granted) exited green in the sandbox. That is "emitter ran
+   spec-mandated gates" by construction, not a self-report — `validated` is
+   earned, not defaulted. **`ise.receiver_authorization.auto_merge: false` is
+   load-bearing, not boilerplate:** the parent applies and commits (§4,
+   PROPOSE-only P0) — Kupo's own verified signal never authorizes a receiver
+   to merge on Kupo's say-so. `auto_route: true` / `auto_deploy: false`
+   follow the same §6.5 defaults every Eidolon in the roster uses.
+
 4. Write both files. Signal the parent that PROPOSE is ready.
+
+5. **Post-flight procedural-memory commit (SHOULD, additive).** After the
+   green signal that gates step 1, and before or alongside emitting PROPOSE,
+   commit the verified edit pattern — see `SPEC.md §9` "Post-flight commit
+   (KEEP verified)". Graceful-skip when CRYSTALIUM is absent.
 
 ---
 

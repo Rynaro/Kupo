@@ -58,6 +58,32 @@ conformance gate and the transition:
   verify and **never hard-fail**. ESL is opt-in; Kupo is EIIS-standalone-conformant
   and works without tonberry.
 
+## Looking ahead — ECL 2.1 verification attestation (Draft, not emitted)
+
+ECL 2.1 (`spec/ecl-2.1.md`, Status: Draft — adoption-gated, not yet the
+governing Published spec) introduces an OPTIONAL `ise.verification`
+sub-block (§6.5.8) that names the verify-attestation seam: who re-checked an
+artefact, from a fresh context, with what transcript access. ESL 1.1's **C8**
+check (advisory, SHOULD-level) already reads this shape today, ahead of ECL
+ratifying it (ESL 1.1 §5.4's documented forward-reference caveat) — a
+`verify.envelope.json` whose `ise.verification` is `{fresh_context: true,
+checker: "kupo", transcript_access: "artifact-only"}` and whose `checker`
+differs from `change.json.maker` satisfies C8 for the checker hop this skill
+owns.
+
+**Once ECL 2.1 is cut to Published** (the gate: ≥3 shipped Eidolons emitting
+the `ise` block — recorded in `spec/ecl-2.0.md` §6.5.5), the verify envelope
+Kupo composes in step 3 above will carry that same `ise.verification`
+sub-block: `fresh_context: true` (Kupo checks from a session that did not see
+the maker's generating transcript — exactly what maker≠checker already
+guarantees structurally), `checker: "kupo"`, `transcript_access:
+"artifact-only"` (Kupo reads only the emitted change artefact, never the
+maker's transcript). **This is documentation of a pending shape, not current
+emission** — `ECL_VERSION` stays `2.0` until 2.1 is cut (§7.3 of the draft),
+and this skill does not emit `ise.verification` today. When 2.1 publishes,
+wire the field into step 3's envelope composition and re-point this note at
+the shipped spec section.
+
 ---
 
 *ESL Lifecycle Hop — Kupo (the CHECKER, maker≠checker mechanically enforced)*

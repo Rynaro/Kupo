@@ -62,7 +62,8 @@ Kupo/
 │   └── esl-hop.md           # ESL lifecycle hop — Kupo as CHECKER (opt-in)
 ├── schemas/
 │   ├── kupo-edit-proposal.v1.json   # Edit proposal output schema
-│   ├── ecl-envelope.v1.json         # Vendored ECL envelope schema
+│   ├── ecl-envelope.v1.json         # Vendored ECL envelope schema (v1, retained — §7.3 back-compat window)
+│   ├── ecl-envelope.v2.json         # Vendored ECL envelope schema (v2 — outbound PROPOSE validates against this)
 │   ├── ecl-base-profile.v1.json     # Vendored ECL base profile
 │   └── install.manifest.v1.json     # Vendored EIIS manifest schema
 └── contracts/               # ECL per-edge contracts (6 in / 5 out)
