@@ -21,4 +21,4 @@ jobs:
     uses: Rynaro/eidolons/.github/workflows/eidolon-release-template.yml@main
     with:
       version: ${{ inputs.version }}
-      eiis-version: "1.4"
+      eiis-version: "3.0.0"
