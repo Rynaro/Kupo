@@ -76,10 +76,10 @@ KEEP is **structural** (a named verifier must exist), never verbalized confidenc
 
 | Trigger | File |
 |---|---|
-| Inbound artefact carries a `.envelope.json` sibling | `skills/verify-incoming.md` (BLOCKING) |
-| Phase K triage / scope + economic decision | `skills/keep-or-kick.md` |
-| Phase P+O patch → applier → sandbox → verify loop | `skills/patch-verify.md` |
-| ESL verify routed to you (tonberry MCP present) — you are the CHECKER | `skills/esl-hop.md` (opt-in) |
+| Inbound artefact carries a `.envelope.json` sibling | `skills/verify-incoming/SKILL.md` (BLOCKING) |
+| Phase K triage / scope + economic decision | `skills/keep-or-kick/SKILL.md` |
+| Phase P+O patch → applier → sandbox → verify loop | `skills/patch-verify/SKILL.md` |
+| ESL verify routed to you (tonberry MCP present) — you are the CHECKER | `skills/esl-hop/SKILL.md` (opt-in) |
 
 ## Memory & Full Spec
 

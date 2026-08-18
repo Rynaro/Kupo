@@ -18,7 +18,7 @@ Default install target: `./.eidolons/kupo`. Then wire Claude Code:
 
 ```
 # Add to your project's CLAUDE.md:
-@.eidolons/kupo/agent.md
+@.eidolons/kupo/PERSONA.md
 ```
 
 ## The K→U→P→O Cycle
@@ -51,7 +51,7 @@ loop-native coding campaign (→ Vivi / APIVR-Δ) · no nameable verifier · pas
 ```
 Kupo/
 ├── install.sh               # Install into any project
-├── agent.md                 # Always-loaded entry point (≤1000 tokens)
+├── PERSONA.md                 # Always-loaded entry point (≤1000 tokens)
 ├── SPEC.md                  # Full KUPO methodology specification
 ├── ECL_VERSION              # 2.0
 ├── EIIS_VERSION             # 1.4
@@ -90,9 +90,23 @@ Do not rely on Kupo in production pipelines without an eval result.
 
 ## Standards
 
-- [EIIS v1.4](https://github.com/Rynaro/eidolons-eiis) — install contract
+- [EIIS 3.0](https://github.com/Rynaro/eidolons-eiis) — install contract
 - [ECL v2.0](https://github.com/Rynaro/eidolons-ecl) — communication contract
 
 ---
 
 *Kupo*
+
+<!-- eiis-v3-package:start -->
+## EIIS v3 package
+
+This repository has the same self-contained package shape as every roster Eidolon:
+
+- `PERSONA.md` — bounded identity, triggers, authority, refusals, and handoffs.
+- `SPEC.md` — the authoritative methodology.
+- `skills/<methodology>/SKILL.md` — unique skill discovery entrypoints.
+- `manifest.json` — immutable package metadata and resource inventory.
+- `install.sh` — package-only installer; the nexus owns vendor adapters.
+
+See [INSTALL.md](INSTALL.md) for nexus and standalone installation.
+<!-- eiis-v3-package:end -->

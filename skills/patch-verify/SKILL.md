@@ -218,7 +218,7 @@ On green signal:
    **Why `ise.assertion_grade: "validated"` (ECL v2.0 §6.5) on every PROPOSE,
    with no lower grade ever emitted:** Kupo never reaches PROPOSE except
    through the pre-completion green-signal gate above — a NAMED external
-   verifier (the one `skills/keep-or-kick.md` required to exist before KEEP
+   verifier (the one `skills/keep-or-kick/SKILL.md` required to exist before KEEP
    was even granted) exited green in the sandbox. That is "emitter ran
    spec-mandated gates" by construction, not a self-report — `validated` is
    earned, not defaulted. **`ise.receiver_authorization.auto_merge: false` is

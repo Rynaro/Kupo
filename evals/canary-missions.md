@@ -33,7 +33,7 @@ payload: |
 ```
 
 **Expected behavior:**
-1. Kupo loads `skills/verify-incoming.md` — envelope passes (`verify_pass`).
+1. Kupo loads `skills/verify-incoming/SKILL.md` — envelope passes (`verify_pass`).
 2. Phase K: KEEP (1 file, tsc as verifier, import fix class, pass-rate clearly > 0.20).
 3. Phase U: atlas-aci locates `src/utils/logger.ts:1` anchor.
 4. Phase P: emits `{ "edit_kind": "search_replace", "blocks": [{ "search": "../configs/app", "replace": "../config/app" }] }`.
@@ -80,7 +80,7 @@ payload: |
 ```
 
 **Expected behavior:**
-1. Kupo loads `skills/verify-incoming.md` — envelope passes.
+1. Kupo loads `skills/verify-incoming/SKILL.md` — envelope passes.
 2. Phase K: REFUSE or ESCALATE.
    - Step 1 fails: > 2 files → REFUSE{SCOPE_TOO_BROAD} or ESCALATE{to: apivr}.
    - Phase U, P, O are NOT entered.
@@ -125,7 +125,7 @@ payload: |
 ```
 
 **Expected behavior:**
-1. Kupo loads `skills/verify-incoming.md` — envelope passes.
+1. Kupo loads `skills/verify-incoming/SKILL.md` — envelope passes.
 2. Phase K: ESCALATE{to: vivi, code: LOOP_NATIVE_CAMPAIGN}.
    - Step 3 matches "loop-native coding campaign" ESCALATE class.
    - Phase U, P, O are NOT entered.
