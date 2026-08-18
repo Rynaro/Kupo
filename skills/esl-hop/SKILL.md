@@ -24,8 +24,8 @@ You did **not** make this change — you check it. Run your normal external-veri
 discipline against the change's declared `acceptance_checks`, then drive the
 conformance gate and the transition:
 
-1. **verify externally** — load `skills/keep-or-kick.md` (triage the change is in
-   scope to check) and `skills/patch-verify.md` (run the NAMED external verifiers
+1. **verify externally** — load `skills/keep-or-kick/SKILL.md` (triage the change is in
+   scope to check) and `skills/patch-verify/SKILL.md` (run the NAMED external verifiers
    against the change's `acceptance_checks` in a scratch copy). One green external
    signal per check, never self-critique.
 2. **conformance gate** — call
@@ -34,7 +34,7 @@ conformance gate and the transition:
    cross-checks `verify.envelope.json`'s `from.eidolon != change.json.maker`).
 3. **compose the verify envelope** — `from.eidolon = kupo`. This **MUST differ**
    from `change.json.maker` (else C4 fails by construction). Reuse your normal ECL
-   `PROPOSE` composition (see `skills/patch-verify.md` "ECL emission").
+   `PROPOSE` composition (see `skills/patch-verify/SKILL.md` "ECL emission").
 4. **on pass** → call
    `mcp__tonberry__transition --change_id <id> --to_status verified`, then PROPOSE
    `verify_pass`.
